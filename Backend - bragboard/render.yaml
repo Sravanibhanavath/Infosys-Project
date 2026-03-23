@@ -1,0 +1,39 @@
+services:
+  - type: web
+    name: bragboard-backend
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app:app --host 0.0.0.0 --port 10000
+```
+
+> Note: `app:app` means → file is `app.py`, FastAPI instance is named `app` ✅ (matches your code)
+
+---
+
+### STEP 4 — Your Folder Structure Should Look Like This
+```
+Backend - bragboard/
+├── app.py               ← your main file (already exists)
+├── models.py            ← already exists
+├── db.py                ← already exists
+├── schemas.py           ← already exists
+├── auth.py              ← already exists
+├── utils.py             ← already exists
+├── shoutout_utils.py    ← already exists
+├── requirements.txt     ← 🆕 CREATE THIS
+└── render.yaml          ← 🆕 CREATE THIS
+```
+
+---
+
+## 🗄️ STEP 5 — Fix Your Database for Production
+
+Your `db.py` likely uses a local SQLite file like `sqlite:///./bragboard.db`. **This won't work on Render** because the filesystem resets on every deploy.
+
+You need to use a free cloud database. The easiest is **Supabase (free PostgreSQL)**:
+
+1. Go to [supabase.com](https://supabase.com) → create a free project
+2. Go to **Settings → Database → Connection String → URI**
+3. Copy the URI — looks like:
+```
+   postgresql://postgres:[password]@db.xxxx.supabase.co:5432/postgres

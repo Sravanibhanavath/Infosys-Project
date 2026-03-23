@@ -1,13 +1,12 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+import os
 
-# PostgreSQL connection URL
-# Format: "postgresql://username:password@host:port/database"
-SQLALCHEMY_DATABASE_URL = "postgresql://postgres:chinnu@localhost:5432/bragboard"
+DATABASE_URL = os.environ.get("DATABASE_URL", "sqlite:///./bragboard.db")
 
 # Create engine
-engine = create_engine(SQLALCHEMY_DATABASE_URL)
+engine = create_engine(DATABASE_URL)
 
 # Create session
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
