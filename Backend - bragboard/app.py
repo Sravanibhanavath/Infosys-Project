@@ -32,6 +32,8 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="BragBoard API 🚀")
 
+# force redeploy
+
 # CORS
 app.add_middleware(
     CORSMiddleware,
