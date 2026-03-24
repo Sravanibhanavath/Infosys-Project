@@ -5,7 +5,7 @@ const Sidebar = ({ user: initialUser }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [user, setUser] = useState(initialUser);
-  const [isOpen, setIsOpen] = useState(false); // 📱 mobile toggle
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
@@ -16,7 +16,6 @@ const Sidebar = ({ user: initialUser }) => {
     }
   }, [initialUser, location.pathname]);
 
-  // Close sidebar when navigating on mobile
   useEffect(() => {
     setIsOpen(false);
   }, [location.pathname]);
@@ -34,7 +33,7 @@ const Sidebar = ({ user: initialUser }) => {
 
   return (
     <>
-      {/* 📱 Mobile Top Bar */}
+      {/* 📱 Mobile Top Bar - only on mobile */}
       <div className="md:hidden fixed top-0 left-0 right-0 z-50 bg-gray-900 border-b border-gray-800 px-4 py-3 flex items-center justify-between">
         <span className="text-lg font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">
           BragBoard 🚀
@@ -47,20 +46,20 @@ const Sidebar = ({ user: initialUser }) => {
         </button>
       </div>
 
-      {/* 📱 Mobile Overlay */}
-      {isOpen && (
-        <div
-          className="md:hidden fixed inset-0 bg-black/50 z-40"
-          onClick={() => setIsOpen(false)}
-        />
-      )}
+      {/* 📱 Mobile Overlay - only shows on mobile when open */}
+      <div
+        onClick={() => setIsOpen(false)}
+        className={`
+          fixed inset-0 bg-black/50 z-40 transition-opacity duration-300
+          md:hidden
+          ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}
+        `}
+      />
 
       {/* Sidebar */}
       <div className={`
         fixed top-0 left-0 h-screen bg-gray-900 text-white flex flex-col z-50 border-r border-gray-800
-        transition-transform duration-300
-        w-64
-        md:translate-x-0 md:w-64
+        transition-transform duration-300 w-64
         ${isOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
       `}>
         {/* Logo */}
@@ -118,7 +117,7 @@ const Sidebar = ({ user: initialUser }) => {
         </div>
       </div>
 
-      {/* 📱 Push content down on mobile for top bar */}
+      {/* 📱 Spacer for mobile top bar */}
       <div className="md:hidden h-14" />
     </>
   );
